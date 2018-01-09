@@ -19,6 +19,33 @@ var btn_receiveAnswer = document.querySelector('#btn_receiveAnswer');
 btn_start.addEventListener('click', onStart);
 btn_finalOffer.addEventListener('click', onOffer);
 btn_receiveAnswer.addEventListener('click', onReceiveAnswer);
+
+var snapshotButton = document.querySelector('button#snapshot');
+var toggleMirrorButton = document.querySelector('button#toggle-mirror');
+var filterSelect = document.querySelector('select#filter');
+
+var canvas = window.canvas = document.querySelector('canvas');
+canvas.width = 480;
+canvas.height = 360;
+
+snapshotButton.onclick = function() {
+    canvas.className = filterSelect.value;
+    canvas.getContext('2d').drawImage(vid1, 0, 0, canvas.width, canvas.height);
+};
+
+filterSelect.onchange = function() {
+    vid1.className = filterSelect.value;
+};
+
+var vidClassName = '';
+toggleMirrorButton.onclick = function() {
+    if (!vidClassName)
+        vidClassName = 'mirror';
+    else 
+        vidClassName = '';
+    vid1.className = vidClassName;
+};
+
 // ---------------------------------------------------------------------------------
 
 // Value
@@ -54,7 +81,7 @@ function onStart() {
         iceServers: [
         ]
     };
-    cfg.iceServers.push({urls: "stun:stun.l.google.com:19302"});
+    // cfg.iceServers.push({urls: "stun:stun.l.google.com:19302"});
     local_peer = new RTCPeerConnection(cfg);
     local_peer.onicecandidate = function (evt) {
         cbIceCandidate(local_peer, evt);
@@ -148,3 +175,30 @@ function cbCheckIceCandidateCompleted(descObject) {
     trace('cbCheckIceCandidateCompleted');
     output_offerDesc.value = descObject.sdp;
 }
+
+
+
+
+
+//--------내가 추가한 부분-----------
+
+getScreenId(function (error, sourceId, screen_constraints) {
+    // error    == null || 'permission-denied' || 'not-installed' || 'installed-disabled' || 'not-chrome'
+    // sourceId == null || 'string' || 'firefox'
+
+    if(error == 'not-installed') {
+      alert('Please install Chrome extension.');
+      return;
+    }
+
+    navigator.getUserMedia = navigator.mozGetUserMedia || navigator.webkitGetUserMedia;
+    navigator.getUserMedia(screen_constraints, function (stream) {
+        document.querySelector('video').src = URL.createObjectURL(stream);
+
+        // share this "MediaStream" object using RTCPeerConnection API
+    }, function (error) {
+      console.error('getScreenId error', error);
+
+      alert('Failed to capture your screen. Please check Chrome console logs for further information.');
+    });
+});
