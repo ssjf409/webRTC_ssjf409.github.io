@@ -202,3 +202,10 @@ getScreenId(function (error, sourceId, screen_constraints) {
       alert('Failed to capture your screen. Please check Chrome console logs for further information.');
     });
 });
+
+
+getChromeExtensionStatus(function(status) {
+    if (status === 'installed-enabled') alert('installed');
+    if (status === 'installed-disabled') alert('installed but disabled');
+    // etc.
+});
