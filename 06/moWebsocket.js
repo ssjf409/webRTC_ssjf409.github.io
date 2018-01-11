@@ -1,11 +1,13 @@
 var g_mc_ws_component = {
     ws: null,
     // url: 'wss://zoops-webrtc-01.herokuapp.com/echo',
-    url: 'ws://127.0.0.1:3001/signal',
+    url: '',// 'ws://127.0.0.1:3001/signal',
     init: function () {
 
     },
-    connect: function (onExternalMessage) {
+    connect: function (url, onExternalMessage) {
+        this.url = url || this.url;
+        
         this.ws = new WebSocket(this.url);
         this.ws.onopen = this.onConnected;
         this.ws.onmessage = onExternalMessage || this.onMessage;
