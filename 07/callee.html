@@ -27,18 +27,6 @@
 <div id="receive" style="overflow:scroll; width:350px; height:200px;border:5px solid red;" >
 
 </div>
-
-<div id="app">
-    <button id="btn_refresh_room_list" @click="onUpdateRoomList">refresh room list</button>
-    <div id="roomlist" style="overflow:scroll; width:350px; height:200px;border:1px solid red;" >
-        <ul id="roomlist_id">
-            <li v-for="room in rooms" @click="onClickRoom(room)">
-                {{ room }}
-            </li>
-        </ul>    
-    </div>
-</div>
-
 </body>
 
 <script src="https://webrtc.github.io/adapter/adapter-latest.js"></script>
